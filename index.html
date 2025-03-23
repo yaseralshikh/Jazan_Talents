@@ -51,22 +51,28 @@
   </div>
 
   <div class="row mb-4 no-print">
-    <div class="col-md-4">
+    <div class="col-md-3">
       <label for="sectorSelect">قطاع التعليم:</label>
       <select class="form-select" id="sectorSelect">
         <option value="">اختر قطاعًا</option>
       </select>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <label for="stageSelect">المرحلة الدراسية:</label>
       <select class="form-select" id="stageSelect">
         <option value="">اختر مرحلة</option>
       </select>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       <label for="schoolSelect">المدرسة:</label>
       <select class="form-select" id="schoolSelect">
         <option value="">اختر مدرسة</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label for="categorySelect">التصنيف:</label>
+      <select class="form-select" id="categorySelect">
+        <option value="">اختر تصنيفًا</option>
       </select>
     </div>
   </div>
@@ -106,17 +112,23 @@
     function populateFilters() {
       const sectorSelect = document.getElementById("sectorSelect");
       const stageSelect = document.getElementById("stageSelect");
+      const schoolSelect = document.getElementById("schoolSelect");
+      const categorySelect = document.getElementById("categorySelect");
 
       const sectors = new Set();
       const stages = new Set();
+      const schools = new Set();
+      const categories = new Set();
 
       for (let i = 0; i < allData.getNumberOfRows(); i++) {
         sectors.add(allData.getValue(i, 0));
         stages.add(allData.getValue(i, 1));
+        categories.add(allData.getValue(i, 7));
       }
 
       sectors.forEach(s => sectorSelect.innerHTML += `<option value="${s}">${s}</option>`);
       stages.forEach(s => stageSelect.innerHTML += `<option value="${s}">${s}</option>`);
+      categories.forEach(s => categorySelect.innerHTML += `<option value="${s}">${s}</option>`);
 
       sectorSelect.addEventListener('change', () => {
         updateSchoolDropdown();
@@ -126,8 +138,8 @@
         updateSchoolDropdown();
         filterAndDraw();
       });
-
-      document.getElementById("schoolSelect").addEventListener('change', filterAndDraw);
+      categorySelect.addEventListener('change', filterAndDraw);
+      schoolSelect.addEventListener('change', filterAndDraw);
     }
 
     function updateSchoolDropdown() {
@@ -156,6 +168,7 @@
       const sector = document.getElementById("sectorSelect").value;
       const stage = document.getElementById("stageSelect").value;
       const school = document.getElementById("schoolSelect").value;
+      const category = document.getElementById("categorySelect").value;
 
       const filteredRows = [];
 
@@ -163,8 +176,9 @@
         const matchSector = !sector || allData.getValue(i, 0) === sector;
         const matchStage = !stage || allData.getValue(i, 1) === stage;
         const matchSchool = !school || allData.getValue(i, 2) === school;
+        const matchCategory = !category || allData.getValue(i, 7) === category;
 
-        if (matchSector && matchStage && matchSchool) {
+        if (matchSector && matchStage && matchSchool && matchCategory) {
           filteredRows.push(i);
         }
       }
@@ -179,8 +193,8 @@
         const id = String(view.getValue(i, 1) || "").replace(/\D/g, '');
         const phone = String(view.getValue(i, 2) || "").replace(/\D/g, '');
         const className = view.getValue(i, 3) || "";
-        const category = view.getValue(i, 4) || "";
-        numberedData.push([i + 1, studentName, id, phone, className, category]);
+        const categoryVal = view.getValue(i, 4) || "";
+        numberedData.push([i + 1, studentName, id, phone, className, categoryVal]);
       }
 
       const finalTable = google.visualization.arrayToDataTable(numberedData);
