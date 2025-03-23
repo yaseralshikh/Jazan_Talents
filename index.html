@@ -2,134 +2,100 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>عرض بيانات الطلاب</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Google Charts -->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <!-- pdfMake -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/pdfmake.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/vfs_fonts.js"></script>
   <style>
     body {
-      font-family: "Cairo", sans-serif;
-      background-color: #f0f6ff;
-      padding: 30px;
-    }
-    .header, .card-filters {
-      background-color: #ffffff;
-      padding: 15px 20px;
-      border-radius: 10px;
-      margin-bottom: 30px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      font-family: 'Tahoma', sans-serif;
+      background-color: #f3f6fd;
+      padding: 20px;
     }
     .header {
-      background-color: #007bff;
+      background-color: #4a8ef1;
       color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .header h2 {
-      margin: 0;
-      font-size: 1.8rem;
-    }
-    .header img {
-      height: 60px;
-      filter: brightness(0) invert(1);
-    }
-    .table-card {
-      background-color: white;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      position: relative;
+      margin-bottom: 30px;
     }
-    #schoolNameTitle {
-      font-weight: bold;
-      font-size: 20px;
-      margin-bottom: 15px;
+    .table-card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+    table {
       text-align: center;
     }
     .btn-print {
-      position: absolute;
-      top: 0;
-      left: 0;
-      margin: 10px;
+      margin-left: 10px;
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 6px;
-      text-align: center;
-    }
-    thead {
-      background-color: #007bff;
-      color: white;
-    }
-
     @media print {
-      .header, .card-filters, .btn-print {
+      .no-print {
         display: none !important;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h2>عرض بيانات الطلاب</h2>
-      <img src="https://salogos.org/wp-content/uploads/2021/11/UntiTtled-1-1568x1192.png" alt="شعار وزارة التعليم" />
+  <div class="header d-flex justify-content-between align-items-center">
+    <img src="https://salogos.org/wp-content/uploads/2021/11/UntiTtled-1-1568x1192.png" alt="شعار وزارة التعليم" height="60" style="filter: brightness(0) invert(1);">
+    <h3 class="m-0">عرض بيانات الطلاب</h3>
+  </div>
+
+  <div class="row mb-4 no-print">
+    <div class="col-md-4">
+      <label for="sectorSelect">قطاع التعليم:</label>
+      <select class="form-select" id="sectorSelect">
+        <option value="">اختر قطاعًا</option>
+      </select>
     </div>
-
-    <div class="card-filters row mb-3">
-      <div class="col-md-4">
-        <label for="sectorSelect">قطاع التعليم:</label>
-        <select class="form-select" id="sectorSelect">
-          <option value="">اختر قطاعًا</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label for="stageSelect">المرحلة الدراسية:</label>
-        <select class="form-select" id="stageSelect">
-          <option value="">اختر مرحلة</option>
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label for="schoolSelect">المدرسة:</label>
-        <select class="form-select" id="schoolSelect">
-          <option value="">اختر مدرسة</option>
-        </select>
-      </div>
+    <div class="col-md-4">
+      <label for="stageSelect">المرحلة الدراسية:</label>
+      <select class="form-select" id="stageSelect">
+        <option value="">اختر مرحلة</option>
+      </select>
     </div>
-
-    <div class="table-card" id="dataTable">
-
-    <div class="text-start mb-3 d-flex gap-2">
-      <button class="btn btn-outline-success" onclick="exportPDF()">📄 حفظ كـ PDF</button>
-<button class="btn btn-outline-primary" onclick="window.print()">🖨️ طباعة</button></div>
-      
-      <div id="schoolNameTitle"></div>
-      <div class="table-responsive" id="table_div"></div>
+    <div class="col-md-4">
+      <label for="schoolSelect">المدرسة:</label>
+      <select class="form-select" id="schoolSelect">
+        <option value="">اختر مدرسة</option>
+      </select>
     </div>
   </div>
 
+  <div class="table-card" id="dataTable">
+    <div class="text-start mb-3">
+      <button class="btn btn-outline-primary" onclick="window.print()">🖨️ طباعة</button>
+      <button class="btn btn-outline-success" onclick="exportPDF()">📄 حفظ كـ PDF</button>
+    </div>
+    <div id="schoolNameTitle" class="fw-bold fs-5 text-center mb-3"></div>
+    <div class="table-responsive" id="table_div"></div>
+  </div>
+
   <script>
-    google.charts.load("current", { packages: ["table"] });
+    google.charts.load('current', { packages: ['table'] });
     google.charts.setOnLoadCallback(loadData);
 
     let allData;
     let dataTable;
 
-    const spreadsheetId = "10R3flKxq0TRXFM7W2K7xoLRxWpNmtu68xEti7d1HP_U";
-    const sheetName = "Data";
+    const spreadsheetId = '10R3flKxq0TRXFM7W2K7xoLRxWpNmtu68xEti7d1HP_U';
+    const sheetName = 'Data';
     const sheetUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?sheet=${sheetName}`;
 
     function loadData() {
       fetch(sheetUrl)
-        .then((res) => res.text())
-        .then((rep) => {
+        .then(res => res.text())
+        .then(rep => {
           const jsonData = JSON.parse(rep.substring(47).slice(0, -2));
           dataTable = new google.visualization.DataTable(jsonData.table);
           allData = dataTable;
@@ -150,25 +116,19 @@
         stages.add(allData.getValue(i, 1));
       }
 
-      sectors.forEach((s) => {
-        sectorSelect.innerHTML += `<option value="${s}">${s}</option>`;
-      });
+      sectors.forEach(s => sectorSelect.innerHTML += `<option value="${s}">${s}</option>`);
+      stages.forEach(s => stageSelect.innerHTML += `<option value="${s}">${s}</option>`);
 
-      stages.forEach((s) => {
-        stageSelect.innerHTML += `<option value="${s}">${s}</option>`;
+      sectorSelect.addEventListener('change', () => {
+        updateSchoolDropdown();
+        filterAndDraw();
       });
-
-      sectorSelect.addEventListener("change", () => {
+      stageSelect.addEventListener('change', () => {
         updateSchoolDropdown();
         filterAndDraw();
       });
 
-      stageSelect.addEventListener("change", () => {
-        updateSchoolDropdown();
-        filterAndDraw();
-      });
-
-      document.getElementById("schoolSelect").addEventListener("change", filterAndDraw);
+      document.getElementById("schoolSelect").addEventListener('change', filterAndDraw);
     }
 
     function updateSchoolDropdown() {
@@ -178,21 +138,17 @@
       schoolSelect.innerHTML = `<option value="">اختر مدرسة</option>`;
 
       const schools = new Set();
-
       for (let i = 0; i < allData.getNumberOfRows(); i++) {
         const currentSector = allData.getValue(i, 0);
         const currentStage = allData.getValue(i, 1);
         const currentSchool = allData.getValue(i, 2);
-
-        if (
-          (!sector || currentSector === sector) &&
-          (!stage || currentStage === stage)
-        ) {
+        if ((!sector || currentSector === sector) &&
+            (!stage || currentStage === stage)) {
           schools.add(currentSchool);
         }
       }
 
-      schools.forEach((school) => {
+      schools.forEach(school => {
         schoolSelect.innerHTML += `<option value="${school}">${school}</option>`;
       });
     }
@@ -201,8 +157,6 @@
       const sector = document.getElementById("sectorSelect").value;
       const stage = document.getElementById("stageSelect").value;
       const school = document.getElementById("schoolSelect").value;
-
-      document.getElementById("schoolNameTitle").innerText = school || "";
 
       const filteredRows = [];
 
@@ -220,75 +174,60 @@
       view.setRows(filteredRows);
       view.setColumns([3, 4, 5, 6, 7]);
 
-      const numberedData = [["#", "اسم الطالب", "السجل المدني", "الجوال", "الصف", "التصنيف"]];
+      const numberedData = [['#', 'اسم الطالب', 'الصف', 'التصنيف']];
       for (let i = 0; i < view.getNumberOfRows(); i++) {
         numberedData.push([
           i + 1,
-          view.getValue(i, 0) || "",
-          view.getValue(i, 1) || "",
-          view.getValue(i, 2) || "",
-          view.getValue(i, 3) || "",
-          view.getValue(i, 4) || "",
+          view.getValue(i, 0),
+          view.getValue(i, 3),
+          view.getValue(i, 4)
         ]);
       }
 
-      let html = "<table><thead><tr>";
-      numberedData[0].forEach((h) => (html += `<th>${h}</th>`));
-      html += "</tr></thead><tbody>";
-      for (let i = 1; i < numberedData.length; i++) {
-        html += "<tr>";
-        numberedData[i].forEach((cell) => (html += `<td>${cell}</td>`));
-        html += "</tr>";
-      }
-      html += "</tbody></table>";
-      document.getElementById("table_div").innerHTML = html;
+      const finalTable = google.visualization.arrayToDataTable(numberedData);
+      const table = new google.visualization.Table(document.getElementById('table_div'));
+      table.draw(finalTable, { showRowNumber: false, width: '100%' });
+
+      document.getElementById("schoolNameTitle").innerText = school;
+    }
+
+    function exportPDF() {
+      const schoolName = document.getElementById("schoolSelect").value || "المدرسة";
+      const tableRows = document.querySelectorAll("#table_div table tr");
+      const body = [];
+
+      tableRows.forEach((row, index) => {
+        const cells = row.querySelectorAll("th, td");
+        const rowData = [];
+        cells.forEach(cell => rowData.push(cell.innerText));
+        body.push(rowData);
+      });
+
+      const docDefinition = {
+        content: [
+          { text: schoolName, style: 'header', alignment: 'center' },
+          {
+            table: {
+              headerRows: 1,
+              body: body
+            },
+            layout: 'lightHorizontalLines'
+          }
+        ],
+        defaultStyle: {
+          alignment: 'right'
+        },
+        styles: {
+          header: {
+            fontSize: 16,
+            bold: true,
+            margin: [0, 0, 0, 10]
+          }
+        }
+      };
+
+      pdfMake.createPdf(docDefinition).download("students.pdf");
     }
   </script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
-<script>
-  function exportPDF() {
-    const title = document.getElementById("schoolNameTitle").innerText || "قائمة الطلاب";
-    const table = document.querySelector("#table_div table");
-    if (!table) return alert("لا توجد بيانات!");
-
-    const headers = Array.from(table.querySelectorAll("thead th")).map(th => th.innerText.trim());
-    const rows = Array.from(table.querySelectorAll("tbody tr")).map(tr =>
-      Array.from(tr.querySelectorAll("td")).map(td => td.innerText.trim())
-    );
-
-    const body = [headers, ...rows];
-
-    const docDefinition = {
-      content: [
-        { text: title, style: "header", alignment: "center", margin: [0, 0, 0, 10] },
-        {
-          table: {
-            headerRows: 1,
-            body: body
-          },
-          layout: "lightHorizontalLines"
-        }
-      ],
-      defaultStyle: {
-        ,
-        alignment: "right"
-      },
-      styles: {
-        header: {
-          fontSize: 16,
-          bold: true
-        }
-      }
-    };
-
-    pdfMake.createPdf(docDefinition).download("students.pdf");
-  }
-
-  // Cairo font definition
-  
-</script>
 </body>
-
 </html>
