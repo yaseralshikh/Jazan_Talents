@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -10,9 +9,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Google Charts -->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <!-- pdfMake -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/pdfmake.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.72/vfs_fonts.js"></script>
   <style>
     body {
       font-family: 'Tahoma', sans-serif;
@@ -73,8 +69,9 @@
   </div>
 
   <div class="table-card" id="dataTable">
-    <div class="text-start mb-3">
-    <button class="btn btn-outline-primary" onclick="window.print()">🖨️ طباعة</button>
+    <div class="text-start mb-3 no-print">
+      <button class="btn btn-outline-primary" onclick="window.print()">🖨️ طباعة</button>
+    </div>
     <div id="schoolNameTitle" class="fw-bold fs-5 text-center mb-3"></div>
     <div class="table-responsive" id="table_div"></div>
   </div>
@@ -174,59 +171,19 @@
 
       const numberedData = [["#", "اسم الطالب", "السجل المدني", "الجوال", "الصف", "التصنيف"]];
       for (let i = 0; i < view.getNumberOfRows(); i++) {
-        numberedData.push([
-          i + 1,
-          view.getValue(i, 0) || "",
-          view.getValue(i, 1) || "",
-          view.getValue(i, 2) || "",
-          view.getValue(i, 3) || "",
-          view.getValue(i, 4) || "",
-        ]);
+        const studentName = view.getValue(i, 0) || "";
+        const id = String(view.getValue(i, 1) || "").replace(/\D/g, '');
+        const phone = String(view.getValue(i, 2) || "").replace(/\D/g, '');
+        const className = view.getValue(i, 3) || "";
+        const category = view.getValue(i, 4) || "";
+        numberedData.push([i + 1, studentName, id, phone, className, category]);
       }
 
       const finalTable = google.visualization.arrayToDataTable(numberedData);
       const table = new google.visualization.Table(document.getElementById('table_div'));
       table.draw(finalTable, { showRowNumber: false, width: '100%' });
 
-      document.getElementById("schoolNameTitle").innerText = school;
-    }
-
-    function exportPDF() {
-      const schoolName = document.getElementById("schoolSelect").value || "المدرسة";
-      const tableRows = document.querySelectorAll("#table_div table tr");
-      const body = [];
-
-      tableRows.forEach((row, index) => {
-        const cells = row.querySelectorAll("th, td");
-        const rowData = [];
-        cells.forEach(cell => rowData.push(cell.innerText));
-        body.push(rowData);
-      });
-
-      const docDefinition = {
-        content: [
-          { text: schoolName, style: 'header', alignment: 'center' },
-          {
-            table: {
-              headerRows: 1,
-              body: body
-            },
-            layout: 'lightHorizontalLines'
-          }
-        ],
-        defaultStyle: {
-          alignment: 'right'
-        },
-        styles: {
-          header: {
-            fontSize: 16,
-            bold: true,
-            margin: [0, 0, 0, 10]
-          }
-        }
-      };
-
-      pdfMake.createPdf(docDefinition).download("students.pdf");
+      document.getElementById("schoolNameTitle").innerText = school ? `المدرسة: ${school}` : "";
     }
   </script>
 </body>
