@@ -75,7 +75,7 @@
   <div class="table-card" id="dataTable">
     <div class="text-start mb-3">
       <button class="btn btn-outline-primary" onclick="window.print()">🖨️ طباعة</button>
-      <button class="btn btn-outline-success" onclick="exportPDF()">📄 حفظ كـ PDF</button>
+<!--       <button class="btn btn-outline-success" onclick="exportPDF()">📄 حفظ كـ PDF</button> -->
     </div>
     <div id="schoolNameTitle" class="fw-bold fs-5 text-center mb-3"></div>
     <div class="table-responsive" id="table_div"></div>
@@ -174,13 +174,15 @@
       view.setRows(filteredRows);
       view.setColumns([3, 4, 5, 6, 7]);
 
-      const numberedData = [['#', 'اسم الطالب', 'الصف', 'التصنيف']];
+      const numberedData = [["#", "اسم الطالب", "السجل المدني", "الجوال", "الصف", "التصنيف"]];
       for (let i = 0; i < view.getNumberOfRows(); i++) {
         numberedData.push([
           i + 1,
-          view.getValue(i, 0),
-          view.getValue(i, 3),
-          view.getValue(i, 4)
+          view.getValue(i, 0) || "",
+          view.getValue(i, 1) || "",
+          view.getValue(i, 2) || "",
+          view.getValue(i, 3) || "",
+          view.getValue(i, 4) || "",
         ]);
       }
 
