@@ -169,7 +169,18 @@
       view.setRows(filteredRows);
       view.setColumns([3, 4, 5, 6, 7]);
 
-      const numberedData = [["#", "اسم الطالب", "السجل المدني", "الجوال", "الصف", "التصنيف"]];
+      const numberedData = [];
+
+      // 🏫 السطر الأول: اسم المدرسة داخل الجدول
+      numberedData.push([
+        { v: `المدرسة: ${school}`, p: { colSpan: 6, style: 'font-weight:bold; font-size:16px; text-align:center' } },
+        null, null, null, null, null
+      ]);
+
+      // رؤوس الأعمدة
+      numberedData.push(["#", "اسم الطالب", "السجل المدني", "الجوال", "الصف", "التصنيف"]);
+
+      // البيانات
       for (let i = 0; i < view.getNumberOfRows(); i++) {
         const studentName = view.getValue(i, 0) || "";
         const id = String(view.getValue(i, 1) || "").replace(/\D/g, '');
@@ -179,11 +190,16 @@
         numberedData.push([i + 1, studentName, id, phone, className, category]);
       }
 
-      const finalTable = google.visualization.arrayToDataTable(numberedData);
+      const finalTable = google.visualization.arrayToDataTable(numberedData, false);
       const table = new google.visualization.Table(document.getElementById('table_div'));
-      table.draw(finalTable, { showRowNumber: false, width: '100%' });
+      table.draw(finalTable, {
+        allowHtml: true,
+        showRowNumber: false,
+        width: '100%'
+      });
 
-      document.getElementById("schoolNameTitle").innerText = school ? `المدرسة: ${school}` : "";
+      // لا حاجة لعرض اسم المدرسة فوق الجدول بعد الآن
+      document.getElementById("schoolNameTitle").innerText = "";
     }
   </script>
 </body>
