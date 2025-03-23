@@ -115,7 +115,7 @@ function filterAndDraw() {
     width: '100%'
   });
 
-  document.getElementById("schoolNameTitle").innerText = school ? `المدرسة: ${school}` : "";
+  document.getElementById("schoolNameTitle").innerText = school ? ${school} : "";
   document.getElementById("pdfBtn").disabled = false;
 }
 
