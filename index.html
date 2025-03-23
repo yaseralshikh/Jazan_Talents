@@ -195,11 +195,11 @@
       for (let i = 0; i < view.getNumberOfRows(); i++) {
         numberedData.push([
           i + 1,
-          view.getValue(i, 0),
-          view.getValue(i, 1).toString().split('.')[0],
-          view.getValue(i, 2).toString().split('.')[0],
-          view.getValue(i, 3),
-          view.getValue(i, 4)
+          view.getValue(i, 0) || '',
+          view.getValue(i, 1) ? view.getValue(i, 1).toString().split('.')[0] : '',
+          view.getValue(i, 2) ? view.getValue(i, 2).toString().split('.')[0] : '',
+          view.getValue(i, 3) || '',
+          view.getValue(i, 4) || ''
         ]);
       }
 
