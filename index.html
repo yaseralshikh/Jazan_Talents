@@ -58,8 +58,7 @@
       width: 100%;
       border-collapse: collapse;
     }
-    th,
-    td {
+    th, td {
       border: 1px solid #ccc;
       padding: 6px;
       text-align: center;
@@ -253,18 +252,18 @@
             th, td { border: 1px solid #aaa; padding: 8px; text-align: center; }
             thead { background-color: #007bff; color: white; }
           </style>
-        </head>
-        <body>
-          <h2>${title}</h2>
-          ${tableHTML}
           <script>
-            window.addEventListener('load', function () {
+            function doPrint() {
               setTimeout(function() {
                 window.print();
                 window.close();
               }, 500);
-            });
+            }
           </script>
+        </head>
+        <body onload="doPrint()">
+          <h2>${title}</h2>
+          ${tableHTML}
         </body>
         </html>
       `);
