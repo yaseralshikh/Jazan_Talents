@@ -1,6 +1,6 @@
 
 pdfMake.vfs = {
-  "Cairo-Regular.ttf": "<BASE64_ENCODED_FONT>"
+  "Cairo-Regular.ttf": "RFVNTVkgRk9OVCBEQVRB"
 };
 
 pdfMake.fonts = {
