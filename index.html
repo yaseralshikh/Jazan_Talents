@@ -254,9 +254,16 @@
         <body>
           <h2>${title}</h2>
           ${tableHTML}
+          
           <script>
-            window.onload = function() { window.print(); window.close(); }
+            window.addEventListener('load', function () {
+              setTimeout(() => {
+                window.print();
+                window.close();
+              }, 500);
+            });
           </script>
+
         </body>
         </html>
       `);
