@@ -105,7 +105,10 @@
     </div>
 
     <div class="table-card" id="dataTable">
-<div class="text-start mb-3"><button class="btn btn-outline-primary" onclick="window.print()">🖨️ طباعة</button></div>
+
+    <div class="text-start mb-3 d-flex gap-2">
+      <button class="btn btn-outline-success" onclick="exportPDF()">📄 حفظ كـ PDF</button>
+<button class="btn btn-outline-primary" onclick="window.print()">🖨️ طباعة</button></div>
       
       <div id="schoolNameTitle"></div>
       <div class="table-responsive" id="table_div"></div>
@@ -217,13 +220,11 @@
       view.setRows(filteredRows);
       view.setColumns([3, 4, 5, 6, 7]);
 
-      const numberedData = [["#", "اسم الطالب", "السجل المدني", "الجوال", "الصف", "التصنيف"]];
+      const numberedData = [["#", "اسم الطالب", "الصف", "التصنيف"]];
       for (let i = 0; i < view.getNumberOfRows(); i++) {
         numberedData.push([
           i + 1,
           view.getValue(i, 0) || "",
-          view.getValue(i, 1) || "",
-          view.getValue(i, 2) || "",
           view.getValue(i, 3) || "",
           view.getValue(i, 4) || "",
         ]);
@@ -241,5 +242,58 @@
       document.getElementById("table_div").innerHTML = html;
     }
   </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.68/vfs_fonts.js"></script>
+<script>
+  function exportPDF() {
+    const title = document.getElementById("schoolNameTitle").innerText || "قائمة الطلاب";
+    const table = document.querySelector("#table_div table");
+    if (!table) return alert("لا توجد بيانات!");
+
+    const headers = Array.from(table.querySelectorAll("thead th")).map(th => th.innerText.trim());
+    const rows = Array.from(table.querySelectorAll("tbody tr")).map(tr =>
+      Array.from(tr.querySelectorAll("td")).map(td => td.innerText.trim())
+    );
+
+    const body = [headers, ...rows];
+
+    const docDefinition = {
+      content: [
+        { text: title, style: "header", alignment: "center", margin: [0, 0, 0, 10] },
+        {
+          table: {
+            headerRows: 1,
+            body: body
+          },
+          layout: "lightHorizontalLines"
+        }
+      ],
+      defaultStyle: {
+        font: "Cairo",
+        alignment: "right"
+      },
+      styles: {
+        header: {
+          fontSize: 16,
+          bold: true
+        }
+      }
+    };
+
+    pdfMake.createPdf(docDefinition).download("students.pdf");
+  }
+
+  // Cairo font definition
+  pdfMake.fonts = {
+    Cairo: {
+      normal: 'Cairo-Regular.ttf',
+      bold: 'Cairo-Bold.ttf',
+      italics: 'Cairo-Regular.ttf',
+      bolditalics: 'Cairo-Bold.ttf'
+    }
+  };
+</script>
 </body>
+
 </html>
