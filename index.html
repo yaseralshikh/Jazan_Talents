@@ -44,12 +44,19 @@
       padding: 20px;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
     }
     #schoolNameTitle {
       font-weight: bold;
       font-size: 20px;
       margin-bottom: 15px;
       text-align: center;
+    }
+    .btn-print {
+      position: absolute;
+      top: 0;
+      left: 0;
+      margin: 10px;
     }
     table {
       width: 100%;
@@ -95,6 +102,7 @@
     </div>
 
     <div class="table-card" id="dataTable">
+      <button class="btn btn-outline-primary btn-print" onclick="window.print()">🖨️ طباعة</button>
       <div id="schoolNameTitle"></div>
       <div id="table_div"></div>
     </div>
@@ -205,11 +213,13 @@
       view.setRows(filteredRows);
       view.setColumns([3, 4, 5, 6, 7]);
 
-      const numberedData = [["#", "اسم الطالب", "الصف", "التصنيف"]];
+      const numberedData = [["#", "اسم الطالب", "السجل المدني", "الجوال", "الصف", "التصنيف"]];
       for (let i = 0; i < view.getNumberOfRows(); i++) {
         numberedData.push([
           i + 1,
           view.getValue(i, 0) || "",
+          view.getValue(i, 1) || "",
+          view.getValue(i, 2) || "",
           view.getValue(i, 3) || "",
           view.getValue(i, 4) || "",
         ]);
