@@ -3,17 +3,16 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>عرض بيانات الطلاب وتصدير PDF</title>
+  <title>عرض بيانات الطلاب</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-  <script src="pdfmake.min.js"></script>
-  <script src="vfs_fonts.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <style>
     body {
+      font-family: 'Tahoma', sans-serif;
       background-color: #f0f6ff;
       padding: 30px;
-      font-family: 'Cairo', sans-serif;
     }
     .header {
       background-color: #007bff;
@@ -21,7 +20,6 @@
       padding: 15px 20px;
       border-radius: 10px;
       margin-bottom: 30px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -47,9 +45,8 @@
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
-    label {
-      font-weight: bold;
-      color: #333;
+    .btn-export {
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -57,36 +54,36 @@
   <div class="container">
     <div class="header">
       <h2>عرض بيانات الطلاب</h2>
-      <img src="https://salogos.org/wp-content/uploads/2021/11/UntiTtled-1-1568x1192.png" alt="شعار وزارة التعليم">
+      <img src="https://upload.wikimedia.org/wikipedia/ar/thumb/e/e4/Ministry_of_Education_Saudi_Arabia_Logo.svg/2560px-Ministry_of_Education_Saudi_Arabia_Logo.svg.png" alt="شعار وزارة التعليم">
     </div>
 
-    <div class="card-filters">
-      <div class="row mb-3">
-        <div class="col-md-4">
-          <label for="sectorSelect">قطاع التعليم:</label>
-          <select class="form-select" id="sectorSelect">
-            <option value="">اختر قطاعًا</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label for="stageSelect">المرحلة الدراسية:</label>
-          <select class="form-select" id="stageSelect">
-            <option value="">اختر مرحلة</option>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label for="schoolSelect">المدرسة:</label>
-          <select class="form-select" id="schoolSelect">
-            <option value="">اختر مدرسة</option>
-          </select>
-        </div>
+    <div class="card-filters row mb-3">
+      <div class="col-md-4">
+        <label for="sectorSelect">قطاع التعليم:</label>
+        <select class="form-select" id="sectorSelect">
+          <option value="">اختر قطاعًا</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="stageSelect">المرحلة الدراسية:</label>
+        <select class="form-select" id="stageSelect">
+          <option value="">اختر مرحلة</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label for="schoolSelect">المدرسة:</label>
+        <select class="form-select" id="schoolSelect">
+          <option value="">اختر مدرسة</option>
+        </select>
       </div>
     </div>
 
-    <div class="table-card" id="table_div"></div>
+    <div class="table-card" id="pdfContent">
+      <div id="table_div"></div>
+    </div>
 
-    <div class="text-center mt-4">
-      <button class="btn btn-success" onclick="exportToPDF()">حفظ كـ PDF</button>
+    <div class="text-center">
+      <button class="btn btn-success btn-export" onclick="generatePDF()">حفظ كـ PDF</button>
     </div>
   </div>
 
@@ -208,78 +205,16 @@
       table.draw(finalTable, { showRowNumber: false, width: '100%', height: 'auto' });
     }
 
-    function exportToPDF() {
-      const sector = document.getElementById("sectorSelect").value;
-      const stage = document.getElementById("stageSelect").value;
-      const school = document.getElementById("schoolSelect").value;
-
-      const filteredRows = [];
-
-      for (let i = 0; i < allData.getNumberOfRows(); i++) {
-        const matchSector = !sector || allData.getValue(i, 0) === sector;
-        const matchStage = !stage || allData.getValue(i, 1) === stage;
-        const matchSchool = !school || allData.getValue(i, 2) === school;
-
-        if (matchSector && matchStage && matchSchool) {
-          filteredRows.push(i);
-        }
-      }
-
-      const view = new google.visualization.DataView(allData);
-      view.setRows(filteredRows);
-      view.setColumns([3, 4, 5, 6, 7]);
-
-      const body = [];
-      for (let i = 0; i < view.getNumberOfRows(); i++) {
-        body.push([
-          { text: (i + 1).toString(), alignment: 'center' },
-          { text: view.getValue(i, 0), alignment: 'right' },
-          { text: view.getValue(i, 3), alignment: 'center' },
-          { text: view.getValue(i, 4), alignment: 'center' }
-        ]);
-      }
-
-      const docDefinition = {
-        content: [
-          { text: 'بيانات الطلاب', style: 'header', alignment: 'center' },
-          {
-            table: {
-              headerRows: 1,
-              widths: ['auto', '*', 'auto', 'auto'],
-              body: [
-                [
-                  { text: '#', style: 'tableHeader', alignment: 'center' },
-                  { text: 'اسم الطالب', style: 'tableHeader', alignment: 'center' },
-                  { text: 'الصف', style: 'tableHeader', alignment: 'center' },
-                  { text: 'التصنيف', style: 'tableHeader', alignment: 'center' }
-                ],
-                ...body
-              ]
-            },
-            layout: 'lightHorizontalLines'
-          }
-        ],
-        defaultStyle: {
-          font: 'Cairo',
-          alignment: 'right'
-        },
-        styles: {
-          header: {
-            fontSize: 16,
-            bold: true,
-            margin: [0, 0, 0, 10]
-          },
-          tableHeader: {
-            bold: true,
-            fillColor: '#007bff',
-            color: 'white'
-          }
-        },
-        pageOrientation: 'portrait',
-        pageSize: 'A4'
+    function generatePDF() {
+      const element = document.getElementById('pdfContent');
+      const opt = {
+        margin:       0.5,
+        filename:     'students.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
       };
-
-      pdfMake.createPdf(docDefinition).download("students.pdf");
+      html2pdf().set(opt).from(element).save();
     }
   </script>
 </body>
