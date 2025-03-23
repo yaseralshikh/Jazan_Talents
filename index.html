@@ -254,7 +254,6 @@
         <body>
           <h2>${title}</h2>
           ${tableHTML}
-          
           <script>
             window.addEventListener('load', function () {
               setTimeout(() => {
@@ -263,9 +262,11 @@
               }, 500);
             });
           </script>
-
         </body>
         </html>
+      `);
+      win.document.close();
+    }
   </script>
 </body>
 </html>
