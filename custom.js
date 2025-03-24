@@ -115,7 +115,7 @@ function filterAndDraw() {
     width: '100%'
   });
 
-  document.getElementById("schoolNameTitle").innerText = school ? ${school} : "";
+  document.getElementById("schoolNameTitle").innerText = school || "";
   document.getElementById("pdfBtn").disabled = false;
 }
 
@@ -127,7 +127,7 @@ function downloadPDF() {
     filename: 'بيانات-الطلاب.pdf',
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2 },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
   };
 
   html2pdf().set(opt).from(element).save();
