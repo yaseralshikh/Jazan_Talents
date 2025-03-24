@@ -30,6 +30,7 @@ table {
 #rowCount {
   font-size: 1.1rem;
   color: #333;
+  background: red;
 }
 
 @media print {
