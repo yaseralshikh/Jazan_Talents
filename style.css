@@ -32,7 +32,8 @@ select.form-select {
 }
 
 @media print {
-  .no-print {
+  .no-print,
+  footer {
     display: none !important;
   }
   .school-info {
