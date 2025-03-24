@@ -23,6 +23,10 @@ table {
   text-align: center;
 }
 
+select.form-select {
+  background-color: #fff9db !important;
+}
+
 .btn-print {
   margin-left: 10px;
 }
