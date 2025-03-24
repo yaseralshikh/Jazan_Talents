@@ -10,59 +10,60 @@
   <link href="style.css" rel="stylesheet">
 </head>
 <body>
-  <div class="header d-flex justify-content-between align-items-center">
-    <img src="https://salogos.org/wp-content/uploads/2021/11/UntiTtled-1-1568x1192.png" alt="شعار وزارة التعليم" height="60" style="filter: brightness(0) invert(1);">
-    <h3 class="m-0">عرض بيانات الطلاب</h3>
-  </div>
-
-  <div class="row mb-4 no-print">
-    <div class="col-md-3">
-      <label for="sectorSelect">قطاع التعليم:</label>
-      <select class="form-select" id="sectorSelect">
-        <option value="">اختر قطاعًا</option>
-      </select>
+  <div class="container">
+    <div class="header d-flex justify-content-between align-items-center">
+      <img src="https://salogos.org/wp-content/uploads/2021/11/UntiTtled-1-1568x1192.png" alt="شعار وزارة التعليم" height="60" style="filter: brightness(0) invert(1);">
+      <h3 class="m-0">عرض بيانات الطلاب</h3>
     </div>
-    <div class="col-md-3">
-      <label for="stageSelect">المرحلة الدراسية:</label>
-      <select class="form-select" id="stageSelect">
-        <option value="">اختر مرحلة</option>
-      </select>
-    </div>
-    <div class="col-md-3">
-      <label for="schoolSelect">المدرسة:</label>
-      <select class="form-select" id="schoolSelect">
-        <option value="">اختر مدرسة</option>
-      </select>
-    </div>
-    <div class="col-md-3">
-      <label for="categorySelect">التصنيف:</label>
-      <select class="form-select" id="categorySelect">
-        <option value="">اختر تصنيفًا</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="table-card" id="dataTable">
-    <div class="d-flex justify-content-between align-items-center mb-3 no-print">
-      <div id="rowCount" class="fst-normal text-primary"></div>
-      <div>
-        <button class="btn btn-outline-primary btn-sm" onclick="window.print()">🖨️ طباعة</button>
-        <button class="btn btn-outline-success btn-print btn-sm" onclick="downloadPDF()" id="pdfBtn" disabled>💾 PDF</button>
+  
+    <div class="row mb-4 no-print">
+      <div class="col-md-3">
+        <label for="sectorSelect">قطاع التعليم:</label>
+        <select class="form-select" id="sectorSelect">
+          <option value="">اختر قطاعًا</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="stageSelect">المرحلة الدراسية:</label>
+        <select class="form-select" id="stageSelect">
+          <option value="">اختر مرحلة</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="schoolSelect">المدرسة:</label>
+        <select class="form-select" id="schoolSelect">
+          <option value="">اختر مدرسة</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="categorySelect">التصنيف:</label>
+        <select class="form-select" id="categorySelect">
+          <option value="">اختر تصنيفًا</option>
+        </select>
       </div>
     </div>
-
-    <div id="element-to-pdf">
-      <div class="school-info mb-3 fw-bold fs-5 text-center" id="schoolNameTitle"></div>
-      <div class="table-responsive" id="table_div"></div>
+  
+    <div class="table-card" id="dataTable">
+      <div class="d-flex justify-content-between align-items-center mb-3 no-print">
+        <div id="rowCount" class="fst-normal text-primary"></div>
+        <div>
+          <button class="btn btn-outline-primary btn-sm" onclick="window.print()">🖨️ طباعة</button>
+          <button class="btn btn-outline-success btn-print btn-sm" onclick="downloadPDF()" id="pdfBtn" disabled>💾 PDF</button>
+        </div>
+      </div>
+  
+      <div id="element-to-pdf">
+        <div class="school-info mb-3 fw-bold fs-5 text-center" id="schoolNameTitle"></div>
+        <div class="table-responsive" id="table_div"></div>
+      </div>
     </div>
+  
+    <footer class="footer mt-5 py-3 text-center text-white">
+      <div class="container">
+        <small>جميع الحقوق محفوظة © 2025 - ماي لورد ياسر</small>
+      </div>
+    </footer>
   </div>
-
-  <footer class="footer mt-5 py-3 text-center text-white">
-    <div class="container">
-      <small>جميع الحقوق محفوظة © 2025 - ماي لورد ياسر</small>
-    </div>
-  </footer>
-
 
   <!-- تحميل المكتبات -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
