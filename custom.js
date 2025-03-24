@@ -1,3 +1,4 @@
+
 google.charts.load('current', { packages: ['table'] });
 google.charts.setOnLoadCallback(loadData);
 
@@ -119,7 +120,6 @@ function filterAndDraw() {
   document.getElementById("pdfBtn").disabled = false;
 }
 
-// زر حفظ PDF
 function downloadPDF() {
   const element = document.getElementById('element-to-pdf');
   const opt = {
