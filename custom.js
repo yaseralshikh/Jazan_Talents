@@ -125,6 +125,8 @@ function filterAndDraw() {
   cells.forEach(cell => {
     cell.style.textAlign = 'center';
   });
+
+  document.getElementById("rowCount").innerText = `عدد الطلاب: ${view.getNumberOfRows()}`;
 }
 
 function downloadPDF() {
