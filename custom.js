@@ -118,6 +118,13 @@ function filterAndDraw() {
 
   document.getElementById("schoolNameTitle").innerText = school || "";
   document.getElementById("pdfBtn").disabled = false;
+
+    // توسيط عمود الترقيم بعد رسم الجدول
+  const tableDiv = document.getElementById('table_div');
+  const cells = tableDiv.querySelectorAll('td:nth-child(1), th:nth-child(1)');
+  cells.forEach(cell => {
+    cell.style.textAlign = 'center';
+  });
 }
 
 function downloadPDF() {
