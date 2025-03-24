@@ -19,6 +19,7 @@ function loadData() {
       populateFilters();
       filterAndDraw();
     });
+  document.getElementById("toggleSensitive").addEventListener('change', filterAndDraw);
 }
 
 function populateFilters() {
@@ -80,6 +81,7 @@ function filterAndDraw() {
   const stage = document.getElementById("stageSelect").value;
   const school = document.getElementById("schoolSelect").value;
   const category = document.getElementById("categorySelect").value;
+  const showSensitive = document.getElementById("toggleSensitive").checked;
 
   const filteredRows = [];
 
@@ -98,7 +100,13 @@ function filterAndDraw() {
   view.setRows(filteredRows);
   view.setColumns([2, 3, 4, 5, 6, 7]);
 
-  const numberedData = [["#", "اسم الطالب", "السجل المدني", "الجوال", "الصف", "التصنيف", "المدرسة"]];
+  // const numberedData = [["#", "اسم الطالب", "السجل المدني", "الجوال", "الصف", "التصنيف", "المدرسة"]];
+  const header = ["#", "اسم الطالب"];
+  if (showSensitive) header.push("السجل المدني", "الجوال");
+  header.push("الصف", "التصنيف", "المدرسة");
+
+  const numberedData = [header];
+  
   for (let i = 0; i < view.getNumberOfRows(); i++) {
     const studentName = view.getValue(i, 1) || "";
     const id = String(view.getValue(i, 2) || "").replace(/\D/g, '');
@@ -106,7 +114,11 @@ function filterAndDraw() {
     const className = view.getValue(i, 4) || "";
     const categoryVal = view.getValue(i, 5) || "";
     const schoolName = view.getValue(i, 0) || "";
-    numberedData.push([i + 1, studentName, id, phone, className, categoryVal, schoolName]);
+
+    const row = [i + 1, studentName];
+    if (showSensitive) row.push(id, phone);
+    row.push(className, categoryVal, schoolName);
+    numberedData.push(row);
   }
 
   const finalTable = google.visualization.arrayToDataTable(numberedData);
