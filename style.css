@@ -27,6 +27,11 @@ table {
   margin-left: 10px;
 }
 
+.google-visualization-table-td:nth-child(1),
+.google-visualization-table-th:nth-child(1) {
+  text-align: center !important;
+}
+
 @media print {
   .no-print {
     display: none !important;
