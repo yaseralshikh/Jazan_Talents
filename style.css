@@ -9,7 +9,12 @@ body {
   color: white;
   padding: 20px;
   border-radius: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+}
+
+footer{
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .table-card {
