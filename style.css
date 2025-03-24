@@ -27,10 +27,6 @@ table {
   margin-left: 10px;
 }
 
-#rowCount {
-  color: blue;
-}
-
 @media print {
   .no-print {
     display: none !important;
