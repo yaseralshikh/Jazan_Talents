@@ -27,6 +27,11 @@ table {
   margin-left: 10px;
 }
 
+#rowCount {
+  font-size: 1.1rem;
+  color: #333;
+}
+
 @media print {
   .no-print {
     display: none !important;
