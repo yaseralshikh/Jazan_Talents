@@ -18,8 +18,19 @@ function loadData() {
       allData = dataTable;
       populateFilters();
       filterAndDraw();
+      initializeSelect2(); // تهيئة Select2 بعد تحميل البيانات لأول مرة
     });
   document.getElementById("toggleSensitive").addEventListener('change', filterAndDraw);
+}
+
+function initializeSelect2() {
+  $(document).ready(function () {
+    $('#schoolSelect').select2({
+      dir: "rtl",
+      width: '100%',
+      placeholder: 'اختر مدرسة'
+    });
+  });
 }
 
 function populateFilters() {
@@ -57,8 +68,9 @@ function populateFilters() {
 function updateSchoolDropdown() {
   const sector = document.getElementById("sectorSelect").value;
   const stage = document.getElementById("stageSelect").value;
-  const schoolSelect = document.getElementById("schoolSelect");
-  schoolSelect.innerHTML = `<option value="">اختر مدرسة</option>`;
+
+  // استخدم jQuery لإزالة الخيارات وإعادة التهيئة
+  $('#schoolSelect').empty().append('<option value="">اختر مدرسة</option>');
 
   const schools = new Set();
   for (let i = 0; i < allData.getNumberOfRows(); i++) {
@@ -72,8 +84,11 @@ function updateSchoolDropdown() {
   }
 
   schools.forEach(school => {
-    schoolSelect.innerHTML += `<option value="${school}">${school}</option>`;
+    $('#schoolSelect').append(`<option value="${school}">${school}</option>`);
   });
+
+  // تحديث Select2 بعد التعديل
+  $('#schoolSelect').trigger('change');
 }
 
 function filterAndDraw() {
