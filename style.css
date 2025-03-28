@@ -64,6 +64,12 @@ select.form-select {
   right: 8px;
 }
 
+/* ✅ اجعل نص "اختر مدرسة" يبدو كنص عادي وليس باهت */
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+  color: #212529 !important; /* لون النص العادي */
+  opacity: 1 !important;     /* اجعل اللون واضحًا تمامًا */
+}
+
 @media print {
   .no-print,
   footer {
