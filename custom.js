@@ -62,7 +62,7 @@ function populateFilters() {
     filterAndDraw();
   });
   categorySelect.addEventListener('change', filterAndDraw);
-  schoolSelect.addEventListener('change', filterAndDraw);
+  $('#schoolSelect').on('change', filterAndDraw);
 }
 
 function updateSchoolDropdown() {
