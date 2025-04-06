@@ -83,7 +83,8 @@ function updateSchoolDropdown() {
   $schoolSelect.empty();
 
   // ✨ أضف الخيار الافتراضي "اختر مدرسة" مع تحديده إذا لم يكن هناك اختيار سابق
-  const defaultOption = new Option("اختر مدرسة", "", true, !previousValue);
+  const defaultOption = new Option("عرض الكل", "", true, !previousValue);
+
   $schoolSelect.append(defaultOption);
 
   // ✨ أضف المدارس المتاحة بناءً على القطاع والمرحلة
