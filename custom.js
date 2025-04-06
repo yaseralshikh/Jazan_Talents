@@ -108,7 +108,7 @@ function updateSchoolDropdown() {
   $schoolSelect.select2({
     dir: "rtl",
     width: '100%',
-    placeholder: 'اختر مدرسة'
+    placeholder: 'عرض الكل'
   });
 }
 
