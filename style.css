@@ -77,6 +77,11 @@ select.form-select {
   font-weight: 500;
 }
 
+/* ✅ إخفاء الترقيم داخل العنصر الذي يتم حفظه كـ PDF فقط */
+#element-to-pdf .google-visualization-table-pagination {
+  display: none !important;
+}
+
 @media print {
   .no-print,
   footer {
