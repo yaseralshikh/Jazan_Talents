@@ -153,7 +153,7 @@ function filterAndDraw() {
     showRowNumber: false,
     width: '100%',
     page: 'enable',
-    pageSize: 10, // عدد الصفوف في كل صفحة
+    pageSize: 50, // عدد الصفوف في كل صفحة
     pagingSymbols: {prev: 'السابق', next: 'التالي'},
     pagingButtonsConfiguration: 'auto'
   });
