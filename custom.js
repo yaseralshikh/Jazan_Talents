@@ -70,24 +70,20 @@ function updateSchoolDropdown() {
   const stage = document.getElementById("stageSelect").value;
 
   const $schoolSelect = $('#schoolSelect');
-
-  // ✨ احفظ القيمة الحالية قبل التحديث
   const previousValue = $schoolSelect.val();
 
-  // ✨ إيقاف التهيئة السابقة إن وجدت
+  // ✨ Destroy Select2 if already initialized
   if ($schoolSelect.hasClass("select2-hidden-accessible")) {
     $schoolSelect.select2('destroy');
   }
 
-  // ✨ أفرغ القائمة
+  // ✨ Clear and rebuild the options
   $schoolSelect.empty();
 
-  // ✨ أضف الخيار الافتراضي "اختر مدرسة" مع تحديده إذا لم يكن هناك اختيار سابق
-  const defaultOption = new Option("عرض الكل", "", true, !previousValue);
+  // ✨ Add "عرض الكل" manually as the first option
+  $schoolSelect.append(new Option("عرض الكل", "", false, !previousValue));
 
-  $schoolSelect.append(defaultOption);
-
-  // ✨ أضف المدارس المتاحة بناءً على القطاع والمرحلة
+  // ✨ Fill the rest of schools
   const schools = new Set();
   for (let i = 0; i < allData.getNumberOfRows(); i++) {
     const currentSector = allData.getValue(i, 0);
@@ -100,17 +96,26 @@ function updateSchoolDropdown() {
   }
 
   schools.forEach(school => {
-    const option = new Option(school, school, false, previousValue === school);
-    $schoolSelect.append(option);
+    $schoolSelect.append(new Option(school, school, false, previousValue === school));
   });
 
-  // ✨ إعادة التهيئة باستخدام Select2
+  // ✨ Re-initialize Select2 with proper placeholder & allowClear
   $schoolSelect.select2({
     dir: "rtl",
     width: '100%',
     placeholder: "عرض الكل",
-    allowClear: true // ✅ حتى يمكن مسح الاختيار والرجوع لـ "عرض الكل"
+    allowClear: true, // this enables X icon to clear
+    language: {
+      noResults: function () {
+        return "لا توجد نتائج";
+      }
+    }
   });
+
+  // ✨ Force placeholder activation
+  if (!previousValue) {
+    $schoolSelect.val("").trigger("change");
+  }
 }
 
 
