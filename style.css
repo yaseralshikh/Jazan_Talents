@@ -12,6 +12,14 @@ body {
   margin-bottom: 20px;
 }
 
+.title-with-icon {
+  font-size: 2rem;
+  white-space: nowrap; /* يمنع نزول النص */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 footer{
   padding: 10px;
   border-radius: 10px;
@@ -92,5 +100,16 @@ select.form-select {
   }
   .google-visualization-table-pagination {
     display: none !important;
+  }
+}
+
+/* عند الشاشات الصغيرة (مثل الجوال) */
+@media (max-width: 576px) {
+  .title-with-icon {
+    font-size: 1.3rem; /* تصغير العنوان */
+  }
+
+  .title-with-icon img {
+    height: 32px !important; /* تصغير الصورة أيضًا */
   }
 }
