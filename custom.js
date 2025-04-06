@@ -109,7 +109,7 @@ function updateSchoolDropdown() {
     dir: "rtl",
     width: '100%',
     placeholder: "عرض الكل",
-  allowClear: true // ✅ حتى يمكن مسح الاختيار والرجوع لـ "عرض الكل"
+    allowClear: true // ✅ حتى يمكن مسح الاختيار والرجوع لـ "عرض الكل"
   });
 }
 
