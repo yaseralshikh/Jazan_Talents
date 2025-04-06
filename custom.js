@@ -151,7 +151,11 @@ function filterAndDraw() {
   const table = new google.visualization.Table(document.getElementById('table_div'));
   table.draw(finalTable, {
     showRowNumber: false,
-    width: '100%'
+    width: '100%',
+    page: 'enable',
+    pageSize: 10, // عدد الصفوف في كل صفحة
+    pagingSymbols: {prev: 'السابق', next: 'التالي'},
+    pagingButtonsConfiguration: 'auto'
   });
 
   document.getElementById("schoolNameTitle").innerText = school || "";
