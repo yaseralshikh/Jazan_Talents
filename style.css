@@ -85,4 +85,7 @@ select.form-select {
   .school-info {
     page-break-inside: avoid;
   }
+  .google-visualization-table-pagination {
+    display: none !important;
+  }
 }
