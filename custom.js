@@ -152,7 +152,7 @@ function filterAndDraw() {
   table.draw(finalTable, {
     showRowNumber: false,
     width: '100%',
-    page: 'enable',
+    page: 'Disable',
     pageSize: 50, // عدد الصفوف في كل صفحة
     pagingSymbols: {prev: 'السابق', next: 'التالي'},
     pagingButtonsConfiguration: 'auto'
