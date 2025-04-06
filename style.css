@@ -77,7 +77,7 @@ select.form-select {
   font-weight: 500;
 }
 
-/* ✅ إخفاء الترقيم داخل العنصر الذي يتم حفظه كـ PDF فقط */
+/* ✅ إخفاء ترقيم الصفحات من داخل العنصر الخاص بـ PDF */
 #element-to-pdf .google-visualization-table-pagination {
   display: none !important;
 }
