@@ -71,14 +71,22 @@ function updateSchoolDropdown() {
 
   const $schoolSelect = $('#schoolSelect');
 
-  // إيقاف التهيئة السابقة
+  // ✨ احفظ القيمة الحالية قبل التحديث
+  const previousValue = $schoolSelect.val();
+
+  // ✨ إيقاف التهيئة السابقة إن وجدت
   if ($schoolSelect.hasClass("select2-hidden-accessible")) {
     $schoolSelect.select2('destroy');
   }
 
-  // إعادة تعبئة القائمة
-  $schoolSelect.empty().append('<option value="">اختر مدرسة</option>');
+  // ✨ أفرغ القائمة
+  $schoolSelect.empty();
 
+  // ✨ أضف الخيار الافتراضي "اختر مدرسة" مع تحديده إذا لم يكن هناك اختيار سابق
+  const defaultOption = new Option("اختر مدرسة", "", true, !previousValue);
+  $schoolSelect.append(defaultOption);
+
+  // ✨ أضف المدارس المتاحة بناءً على القطاع والمرحلة
   const schools = new Set();
   for (let i = 0; i < allData.getNumberOfRows(); i++) {
     const currentSector = allData.getValue(i, 0);
@@ -91,16 +99,55 @@ function updateSchoolDropdown() {
   }
 
   schools.forEach(school => {
-    $schoolSelect.append(`<option value="${school}">${school}</option>`);
+    const option = new Option(school, school, false, previousValue === school);
+    $schoolSelect.append(option);
   });
 
-  // إعادة تهيئة Select2 بعد التحديث
+  // ✨ إعادة التهيئة باستخدام Select2
   $schoolSelect.select2({
     dir: "rtl",
     width: '100%',
     placeholder: 'اختر مدرسة'
   });
 }
+
+
+// function updateSchoolDropdown() {
+//   const sector = document.getElementById("sectorSelect").value;
+//   const stage = document.getElementById("stageSelect").value;
+
+//   const $schoolSelect = $('#schoolSelect');
+
+//   // إيقاف التهيئة السابقة
+//   if ($schoolSelect.hasClass("select2-hidden-accessible")) {
+//     $schoolSelect.select2('destroy');
+//   }
+
+//   // إعادة تعبئة القائمة
+//   $schoolSelect.empty().append('<option value="">اختر مدرسة</option>');
+
+//   const schools = new Set();
+//   for (let i = 0; i < allData.getNumberOfRows(); i++) {
+//     const currentSector = allData.getValue(i, 0);
+//     const currentStage = allData.getValue(i, 1);
+//     const currentSchool = allData.getValue(i, 2);
+//     if ((!sector || currentSector === sector) &&
+//         (!stage || currentStage === stage)) {
+//       schools.add(currentSchool);
+//     }
+//   }
+
+//   schools.forEach(school => {
+//     $schoolSelect.append(`<option value="${school}">${school}</option>`);
+//   });
+
+//   // إعادة تهيئة Select2 بعد التحديث
+//   $schoolSelect.select2({
+//     dir: "rtl",
+//     width: '100%',
+//     placeholder: 'اختر مدرسة'
+//   });
+// }
 
 function filterAndDraw() {
   const sector = document.getElementById("sectorSelect").value;
