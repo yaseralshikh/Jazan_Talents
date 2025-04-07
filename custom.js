@@ -208,7 +208,7 @@ function filterAndDraw() {
     numberedData.push(row);
   }
 
-  const finalTable = google.visualization.arrayToDataTable(numberedData, true); // true = allowHtml
+  const finalTable = google.visualization.arrayToDataTable(numberedData);
   const table = new google.visualization.Table(document.getElementById('table_div'));
   table.draw(finalTable, {
     showRowNumber: false,
