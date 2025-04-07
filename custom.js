@@ -22,6 +22,21 @@ function loadData() {
     });
   document.getElementById("toggleSensitive").addEventListener('change', filterAndDraw);
   document.getElementById("searchInput").addEventListener("input", filterAndDraw);
+
+  const searchInput = document.getElementById("searchInput");
+  const clearSearchBtn = document.getElementById("clearSearchBtn");
+  
+  searchInput.addEventListener("input", () => {
+    // أظهر الزر عند وجود نص
+    clearSearchBtn.classList.toggle("d-none", searchInput.value.trim() === "");
+    filterAndDraw();
+  });
+  
+  clearSearchBtn.addEventListener("click", () => {
+    searchInput.value = "";
+    clearSearchBtn.classList.add("d-none");
+    filterAndDraw();
+  });
 }
 
 function initializeSelect2() {
