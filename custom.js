@@ -202,18 +202,8 @@ function filterAndDraw() {
     const categoryVal = view.getValue(i, 5) || "";
     const schoolName = view.getValue(i, 0) || "";
 
-    // تظليل المطابقة إن وُجد
-    let highlightedName = studentName;
-    let highlightedId = id;
-    
-    if (searchText) {
-      const regex = new RegExp(`(${searchText})`, 'gi');
-      highlightedName = studentName.replace(regex, `<span class="highlight">$1</span>`);
-      highlightedId = id.replace(regex, `<span class="highlight">$1</span>`);
-    }
-    
-    const row = [i + 1, highlightedName];
-    if (showSensitive) row.push(highlightedId, phone);
+    const row = [i + 1, studentName];
+    if (showSensitive) row.push(id, phone);
     row.push(className, categoryVal, schoolName);
     numberedData.push(row);
   }
