@@ -202,13 +202,23 @@ function filterAndDraw() {
     const categoryVal = view.getValue(i, 5) || "";
     const schoolName = view.getValue(i, 0) || "";
 
-    const row = [i + 1, studentName];
-    if (showSensitive) row.push(id, phone);
+    // تظليل المطابقة إن وُجد
+    let highlightedName = studentName;
+    let highlightedId = id;
+    
+    if (searchText) {
+      const regex = new RegExp(`(${searchText})`, 'gi');
+      highlightedName = studentName.replace(regex, `<span class="highlight">$1</span>`);
+      highlightedId = id.replace(regex, `<span class="highlight">$1</span>`);
+    }
+    
+    const row = [i + 1, highlightedName];
+    if (showSensitive) row.push(highlightedId, phone);
     row.push(className, categoryVal, schoolName);
     numberedData.push(row);
   }
 
-  const finalTable = google.visualization.arrayToDataTable(numberedData);
+  const finalTable = google.visualization.arrayToDataTable(numberedData, true); // true = allowHtml
   const table = new google.visualization.Table(document.getElementById('table_div'));
   table.draw(finalTable, {
     showRowNumber: false,
