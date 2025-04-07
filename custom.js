@@ -21,6 +21,7 @@ function loadData() {
       initializeSelect2(); // تهيئة Select2 بعد تحميل البيانات لأول مرة
     });
   document.getElementById("toggleSensitive").addEventListener('change', filterAndDraw);
+  document.getElementById("searchInput").addEventListener("input", filterAndDraw);
 }
 
 function initializeSelect2() {
@@ -157,6 +158,7 @@ function updateSchoolDropdown() {
 // }
 
 function filterAndDraw() {
+  const searchText = document.getElementById("searchInput")?.value.trim().toLowerCase() || "";
   const sector = document.getElementById("sectorSelect").value;
   const stage = document.getElementById("stageSelect").value;
   const school = document.getElementById("schoolSelect").value;
@@ -171,7 +173,12 @@ function filterAndDraw() {
     const matchSchool = !school || allData.getValue(i, 2) === school;
     const matchCategory = !category || allData.getValue(i, 7) === category;
 
-    if (matchSector && matchStage && matchSchool && matchCategory) {
+    const studentName = (allData.getValue(i, 3) || "").toLowerCase();
+    const id = String(allData.getValue(i, 4) || "");
+    
+    const matchSearch = !searchText || studentName.includes(searchText) || id.includes(searchText);
+    
+    if (matchSector && matchStage && matchSchool && matchCategory && matchSearch) {
       filteredRows.push(i);
     }
   }
