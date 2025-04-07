@@ -70,7 +70,15 @@
 
       <div class="position-relative mb-3 no-print">
         <input type="text" class="form-control pe-5" id="searchInput" placeholder="🔍 ابحث بالاسم أو السجل المدني">
-        <button id="clearSearchBtn" class="btn btn-sm btn-light position-absolute end-0 top-50 translate-middle-y me-2 d-none" style="z-index:10;">&times;</button>
+<!--         <button id="clearSearchBtn" class="btn btn-sm btn-light position-absolute end-0 top-50 translate-middle-y me-2 d-none" style="z-index:10;">&times;</button> -->
+        <span id="clearSearchBtn"
+              class="position-absolute end-0 top-50 translate-middle-y me-2 d-none"
+              style="cursor: pointer; font-size: 1.2rem; color: #888;"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="امسح البحث">
+          ❌
+        </span>
       </div>      
   
       <div id="element-to-pdf">
