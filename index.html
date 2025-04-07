@@ -55,11 +55,15 @@
         <div id="rowCount" class="fst-normal text-primary"></div>
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="checkbox" id="toggleSensitive" checked>
-          <label class="form-check-label" for="toggleSensitive">عرض السجل المدني والجوال</label>
+          <label class="form-check-label" for="toggleSensitive">عرض المزيد</label>
         </div>
         <div>
           <button class="btn btn-outline-primary btn-sm" onclick="window.print()">🖨️ طباعة</button>
           <button class="btn btn-outline-success btn-print btn-sm" onclick="downloadPDF()" id="pdfBtn" disabled>💾 PDF</button>
+        </div>
+        <div class="mb-3 no-print">
+          <label for="searchInput" class="form-label">🔍 البحث بالاسم أو السجل المدني:</label>
+          <input type="text" id="searchInput" class="form-control" placeholder="اكتب جزءًا من الاسم أو رقم السجل">
         </div>
       </div>
   
