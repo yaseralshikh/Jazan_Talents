@@ -27,7 +27,7 @@ function loadData() {
   const clearSearchBtn = document.getElementById("clearSearchBtn");
   
   searchInput.addEventListener("input", () => {
-    // أظهر الزر عند وجود نص
+    // أظهر ❌ إذا كان هناك نص
     clearSearchBtn.classList.toggle("d-none", searchInput.value.trim() === "");
     filterAndDraw();
   });
