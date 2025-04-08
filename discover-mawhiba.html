@@ -37,7 +37,39 @@
           </ul>
         </div>
       </div>
-    </nav>  
+    </nav>
+    <!-- ✅ العنوان ومربع الإدخال -->
+    <div class="container py-3">
+      <div class="text-center mb-4">
+        <h1 class="display-5 text-primary"><i class="fas fa-check-circle"></i> التحقق من اجتياز الاختبار</h1>
+        <p class="lead text-muted">أدخل رقم الطالب للتحقق من حالته</p>
+      </div>
+    
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card shadow-sm">
+            <div class="card-body">
+    
+              <!-- ✅ حقل إدخال رقم الطالب مع تفعيل ميزة autocomplete -->
+              <div class="mb-3">
+                <input type="number" id="studentIdInput" class="form-control form-control-lg text-center" placeholder="رقم الطالب" autocomplete="on">
+                <small class="text-muted d-block mt-1 text-center">يجب إدخال الرقم بالأرقام الإنجليزية</small>
+              </div>
+    
+              <!-- ✅ زر التحقق -->
+              <div class="d-grid">
+                <button class="btn btn-success btn-lg" onclick="checkResult()">
+                  <i class="fas fa-search"></i> تحقق
+                </button>
+              </div>
+    
+              <!-- ✅ صندوق عرض النتيجة -->
+              <div id="result" class="alert mt-4 d-none" role="alert"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>    
   
     <footer class="footer mt-3 py-1 text-center text-white bg-dark ">
       <div class="container">
@@ -45,15 +77,95 @@
       </div>
     </footer>
   </div>
-
   <!-- تحميل المكتبات -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
   <!-- ملف الجافا سكربت المخصص -->
-  <script src="custom.js"></script>
+  <script>
+    // ✅ تحميل مكتبة Google Visualization الخاصة بالجداول
+    google.charts.load('current', {packages: ['table']});
+  
+    // ✅ دالة لتحويل الأرقام العربية (٠-٩) إلى أرقام إنجليزية (0-9)
+    function convertArabicToEnglish(input) {
+      const arabicNumbers = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+      return input.replace(/[٠-٩]/g, (d) => arabicNumbers.indexOf(d).toString());
+    }
+    
+    // ✅ الدالة الرئيسية للتحقق من رقم الطالب
+    function checkResult() {
+      // استرجاع الرقم المدخل وتحويله من عربي إلى إنجليزي إن لزم
+      const rawInput = document.getElementById('studentIdInput').value.trim();
+      const studentId = convertArabicToEnglish(rawInput);
+      console.log("Student ID after normalization:", studentId); // للاختبار
+  
+      // صندوق عرض النتيجة
+      const resultDiv = document.getElementById('result');
+      resultDiv.classList.add('d-none');
+      resultDiv.innerHTML = '';
+  
+      // ✅ التحقق من أن الحقل غير فارغ
+      if (!studentId) {
+        resultDiv.className = 'alert alert-warning mt-4';
+        resultDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> يرجى إدخال رقم الطالب';
+        return;
+    }
+  
+      // ✅ إعداد عنوان الجدول Google Sheet
+      const spreadsheetId = '13Wxrao8bnaHFbf7dcy28epoUI73LRSbku7CTbNUvIRc'; // ضع ID الصحيح للجدول
+      const sheetName = 'Data'; // اسم الورقة داخل Google Sheets
+      const queryUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?sheet=${sheetName}`;
+      const query = new google.visualization.Query(queryUrl);
+  
+      // ✅ إرسال الطلب لجلب البيانات
+      query.send(function(response) {
+        if (response.isError()) {
+          // في حال حدوث خطأ في تحميل البيانات
+          resultDiv.className = 'alert alert-danger mt-4';
+          resultDiv.innerHTML = `
+            <i class="fas fa-times-circle"></i> حدث خطأ أثناء تحميل البيانات:<br>
+            <strong>الرسالة:</strong> ${response.getMessage()}<br>
+            <strong>التفاصيل:</strong> ${response.getDetailedMessage()}
+          `;
+          return;
+        }
+  
+        // ✅ قراءة البيانات
+        const data = response.getDataTable();
+        let found = false;
+  
+        // ✅ البحث عن رقم الطالب في الصفوف
+        for (let i = 0; i < data.getNumberOfRows(); i++) {
+          const id = data.getValue(i, 0)?.toString().trim(); // العمود الأول: رقم الطالب
+          const name = data.getValue(i, 1);                  // العمود الثاني: الاسم
+          const status = data.getValue(i, 2);                // العمود الثالث: الحالة (مجتاز أو غير مجتاز)
+  
+          if (id === studentId) {
+            found = true;
+            resultDiv.className = 'alert mt-4';
+  
+            if (status === 'مجتاز') {
+              resultDiv.classList.add('alert-success');
+              resultDiv.innerHTML = `<i class="fas fa-check-circle"></i> تهانينا ${name}، لقد <strong>اجتزت</strong> الاختبار ✅`;
+            } else {
+              resultDiv.classList.add('alert-danger');
+              resultDiv.innerHTML = `<i class="fas fa-times-circle"></i> عذرًا ${name}، لم تجتز الاختبار ❌`;
+            }
+            break;
+          }
+        }
+  
+        // ✅ في حال لم يتم العثور على الرقم
+        if (!found) {
+          resultDiv.className = 'alert alert-warning mt-4';
+          resultDiv.innerHTML = '<i class="fas fa-info-circle"></i> رقم الطالب غير موجود.';
+        }
+  
+        // ✅ عرض النتيجة
+        resultDiv.classList.remove('d-none');
+      });
+    }
+  </script>  
 </body>
 </html>
