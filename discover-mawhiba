@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>موهوبو جازان</title>
+  <link rel="icon" type="image/x-icon" href="icons8-talent-80.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <!-- ملف التنسيق الخارجي -->
+  <link href="style.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container p-3 bg-white">
+    <div class="header d-flex justify-content-between align-items-center">
+      <img src="https://salogos.org/wp-content/uploads/2021/11/UntiTtled-1-1568x1192.png" alt="شعار وزارة التعليم" height="60" style="filter: brightness(0) invert(1);">
+      <h3 class="m-0 text-start title-with-icon">
+        <span>موهوبو جازان</span>
+        <img src="icons8-talent-80.png" class="img-fluid ms-2" alt="موهوبو جازان" height="60" style="filter: brightness(0) invert(1);">
+      </h3>
+    </div>  
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mb-3">
+      <div class="container">
+        <a class="navbar-brand fw-bold" href="index.html">بيانات الطلاب الموهوبين</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link active" href="index.html">الرئيسية</a></li>
+            <li class="nav-item"><a class="nav-link" href="about.html">عن المبادرة</a></li>
+            <li class="nav-item"><a class="nav-link" href="contact.html">تواصل معنا</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>  
+    
+    <div class="row mb-4 no-print">
+      <div class="col-md-3">
+        <label for="sectorSelect">قطاع التعليم:</label>
+        <select class="form-select" id="sectorSelect">
+          <option value="">اختر قطاعًا</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="stageSelect">المرحلة الدراسية:</label>
+        <select class="form-select" id="stageSelect">
+          <option value="">اختر مرحلة</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="schoolSelect">المدرسة:</label>
+        <select class="form-select" id="schoolSelect">
+          <option value="">عرض الكل</option>
+        </select>
+      </div>
+      <div class="col-md-3">
+        <label for="categorySelect">التصنيف:</label>
+        <select class="form-select" id="categorySelect">
+          <option value="">اختر تصنيفًا</option>
+        </select>
+      </div>
+    </div>
+  
+    <div class="table-card" id="dataTable">
+      <div class="d-flex justify-content-between align-items-center mb-3 no-print">
+        <div id="rowCount" class="fst-normal text-primary"></div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="toggleSensitive" checked>
+          <label class="form-check-label" for="toggleSensitive">عرض المزيد</label>
+        </div>
+        <div>
+          <button class="btn btn-outline-primary btn-sm" onclick="window.print()">🖨️ طباعة</button>
+          <button class="btn btn-outline-success btn-print btn-sm" onclick="downloadPDF()" id="pdfBtn" disabled>💾 PDF</button>
+        </div>
+      </div>
+
+      <div class="position-relative mb-3 no-print">
+        <input type="text" class="form-control pe-5" id="searchInput" placeholder="🔍 ابحث بالاسم أو السجل المدني">
+        <span id="clearSearchBtn"
+              class="position-absolute end-0 top-50 translate-middle-y me-2 d-none"
+              style="cursor: pointer; font-size: 1.2rem; color: #888;"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="امسح البحث">
+          ❌
+        </span>
+      </div>      
+  
+      <div id="element-to-pdf">
+        <div class="school-info mb-3 fw-bold fs-5 text-center" id="schoolNameTitle"></div>
+        <div class="table-wrapper">
+          <div class="table-responsive" id="table_div"></div>
+        </div>
+      </div>
+    </div>
+  
+    <footer class="footer mt-3 py-1 text-center text-white bg-dark ">
+      <div class="container">
+        <small>جميع الحقوق محفوظة © 2025 - ياسر الشيخ</small>
+      </div>
+    </footer>
+  </div>
+
+  <!-- تحميل المكتبات -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+  <!-- ملف الجافا سكربت المخصص -->
+  <script src="custom.js"></script>
+</body>
+</html>
