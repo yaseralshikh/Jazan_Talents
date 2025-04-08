@@ -9,7 +9,14 @@ body {
   color: white;
   padding: 20px;
   border-radius: 10px;
+  border-bottom-left-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
 /*   margin-bottom: 20px; */
+}
+
+.navbar {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
 }
 
 .title-with-icon {
