@@ -247,8 +247,30 @@ function filterAndDraw() {
   document.getElementById("rowCount").innerText = `عدد الطلاب: ${view.getNumberOfRows()}`;
 }
 
+// function downloadPDF() {
+//   const element = document.getElementById('element-to-pdf');
+//   const opt = {
+//     margin: 0.5,
+//     filename: 'بيانات-الطلاب.pdf',
+//     image: { type: 'jpeg', quality: 0.98 },
+//     html2canvas: { scale: 2 },
+//     jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+//   };
+
+//   html2pdf().set(opt).from(element).save();
+// }
+
 function downloadPDF() {
   const element = document.getElementById('element-to-pdf');
+
+  // ✅ إزالة القيود على الجدول مؤقتًا قبل حفظ PDF
+  const tableDiv = document.getElementById('table_div');
+  const oldOverflow = tableDiv.style.overflow;
+  const oldMaxHeight = tableDiv.style.maxHeight;
+
+  tableDiv.style.overflow = 'visible';
+  tableDiv.style.maxHeight = 'none';
+
   const opt = {
     margin: 0.5,
     filename: 'بيانات-الطلاب.pdf',
@@ -257,5 +279,10 @@ function downloadPDF() {
     jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
   };
 
-  html2pdf().set(opt).from(element).save();
+  html2pdf().set(opt).from(element).save().then(() => {
+    // ✅ إعادة الحالة كما كانت بعد الحفظ
+    tableDiv.style.overflow = oldOverflow;
+    tableDiv.style.maxHeight = oldMaxHeight;
+  });
 }
+
