@@ -84,6 +84,7 @@ function populateFilters() {
   });
   categorySelect.addEventListener('change', filterAndDraw);
   $('#schoolSelect').on('change', filterAndDraw);
+  $('#categorySelect').on('change', filterAndDraw);
 }
 
 function updateSchoolDropdown() {
@@ -184,6 +185,7 @@ function filterAndDraw() {
   const school = document.getElementById("schoolSelect").value;
   //const category = document.getElementById("categorySelect").value;
   const selectedCategories = $('#categorySelect').val(); // مصفوفة من القيم المختارة
+  
   const showSensitive = document.getElementById("toggleSensitive").checked;
 
   const filteredRows = [];
