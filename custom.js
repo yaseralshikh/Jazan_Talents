@@ -47,10 +47,10 @@ function initializeSelect2() {
       placeholder: 'اختر مدرسة'
     });
     $('#categorySelect').select2({
-      dir: 'rtl',
+      dir: "rtl",
       width: '100%',
-      placeholder: 'اختر تصنيفات',
-      closeOnSelect: false
+      placeholder: "اختر تصنيفات",
+      allowClear: true
     });
   });
 }
@@ -185,7 +185,8 @@ function filterAndDraw() {
   const stage = document.getElementById("stageSelect").value;
   const school = document.getElementById("schoolSelect").value;
   //const category = document.getElementById("categorySelect").value;
-  const selectedCategories = $('#categorySelect').val(); // مصفوفة من القيم المختارة
+  // const selectedCategories = $('#categorySelect').val(); // مصفوفة من القيم المختارة
+  const categories = $('#categorySelect').val(); // مصفوفة
   
   const showSensitive = document.getElementById("toggleSensitive").checked;
 
@@ -196,7 +197,7 @@ function filterAndDraw() {
     const matchStage = !stage || allData.getValue(i, 1) === stage;
     const matchSchool = !school || allData.getValue(i, 2) === school;
     //const matchCategory = !category || allData.getValue(i, 7) === category;
-    const matchCategory = !selectedCategories || selectedCategories.length === 0 || selectedCategories.includes(allData.getValue(i, 7));
+    const matchCategory = !categories || categories.length === 0 || categories.includes(allData.getValue(i, 7));
 
     const studentName = (allData.getValue(i, 3) || "").toLowerCase();
     const id = String(allData.getValue(i, 4) || "");
@@ -245,7 +246,6 @@ function filterAndDraw() {
   });
 
   document.getElementById("schoolNameTitle").innerText = school || "";
-  document.getElementById("pdfBtn").disabled = false;
 
     // توسيط عمود الترقيم بعد رسم الجدول
   const tableDiv = document.getElementById('table_div');
@@ -270,29 +270,29 @@ function filterAndDraw() {
 //   html2pdf().set(opt).from(element).save();
 // }
 
-function downloadPDF() {
-  const element = document.getElementById('element-to-pdf');
+// function downloadPDF() {
+//   const element = document.getElementById('element-to-pdf');
 
-  // ✅ إزالة القيود على الجدول مؤقتًا قبل حفظ PDF
-  const tableDiv = document.getElementById('table_div');
-  const oldOverflow = tableDiv.style.overflow;
-  const oldMaxHeight = tableDiv.style.maxHeight;
+//   // ✅ إزالة القيود على الجدول مؤقتًا قبل حفظ PDF
+//   const tableDiv = document.getElementById('table_div');
+//   const oldOverflow = tableDiv.style.overflow;
+//   const oldMaxHeight = tableDiv.style.maxHeight;
 
-  tableDiv.style.overflow = 'visible';
-  tableDiv.style.maxHeight = 'none';
+//   tableDiv.style.overflow = 'visible';
+//   tableDiv.style.maxHeight = 'none';
 
-  const opt = {
-    margin: 0.5,
-    filename: 'بيانات-الطلاب.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
-  };
+//   const opt = {
+//     margin: 0.5,
+//     filename: 'بيانات-الطلاب.pdf',
+//     image: { type: 'jpeg', quality: 0.98 },
+//     html2canvas: { scale: 2 },
+//     jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+//   };
 
-  html2pdf().set(opt).from(element).save().then(() => {
-    // ✅ إعادة الحالة كما كانت بعد الحفظ
-    tableDiv.style.overflow = oldOverflow;
-    tableDiv.style.maxHeight = oldMaxHeight;
-  });
-}
+//   html2pdf().set(opt).from(element).save().then(() => {
+//     // ✅ إعادة الحالة كما كانت بعد الحفظ
+//     tableDiv.style.overflow = oldOverflow;
+//     tableDiv.style.maxHeight = oldMaxHeight;
+//   });
+// }
 
