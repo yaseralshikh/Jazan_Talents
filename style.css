@@ -92,6 +92,20 @@ select.form-select {
   font-weight: 500;
 }
 
+/* تعديل خلفية العنصر المختار في Select2 متعددة */
+.select2-container--default .select2-selection--multiple {
+  background-color: #fff9db !important; /* نفس لون القوائم الأخرى */
+  border: 1px solid #ced4da;
+  min-height: 38px;
+}
+
+/* تعديل خلفية العناصر الداخلية (Tags) */
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background-color: #fff9db !important;
+  color: #000;
+  border: 1px solid #ced4da;
+}
+
 /* ✅ إخفاء ترقيم الصفحات من داخل العنصر الخاص بـ PDF */
 #element-to-pdf .google-visualization-table-pagination {
   display: none !important;
