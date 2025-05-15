@@ -65,8 +65,16 @@ select.form-select {
   align-items: center;
 }
 
+/* توحيد الخط داخل مربع البحث في Select2 */
+.select2-container--default .select2-search--inline .select2-search__field {
+  font-family: 'Cairo', sans-serif !important;
+  font-size: 1rem;
+  color: #212529;
+}
+
 /* ✅ تنسيق النص داخل Select2 */
 .select2-container--default .select2-selection--single .select2-selection__rendered {
+  font-family: 'Cairo', sans-serif !important;
   color: #212529 !important;
   text-align: right !important;
   line-height: normal !important;
@@ -74,6 +82,7 @@ select.form-select {
 
 /* ✅ ضبط السهم داخل الحقل */
 .select2-container--default .select2-selection--single .select2-selection__arrow {
+  font-family: 'Cairo', sans-serif !important;
   top: 50% !important;
   transform: translateY(-50%);
   right: 8px;
@@ -81,12 +90,14 @@ select.form-select {
 
 /* ✅ اجعل نص "اختر مدرسة" يبدو كنص عادي وليس باهت */
 .select2-container--default .select2-selection--single .select2-selection__placeholder {
+  font-family: 'Cairo', sans-serif !important;
   color: #212529 !important; /* لون النص العادي */
   opacity: 1 !important;     /* اجعل اللون واضحًا تمامًا */
 }
 
 /* اجعل نص placeholder في Select2 بنفس لون النص العادي */
 .select2-container--default .select2-selection--single .select2-selection__rendered.select2-selection__placeholder {
+  font-family: 'Cairo', sans-serif !important;
   color: #212529 !important;
   opacity: 1 !important;
   font-weight: 500;
@@ -94,6 +105,7 @@ select.form-select {
 
 /* تعديل خلفية العنصر المختار في Select2 متعددة */
 .select2-container--default .select2-selection--multiple {
+  font-family: 'Cairo', sans-serif !important;
   background-color: #fff9db !important; /* نفس لون القوائم الأخرى */
   border: 1px solid #ced4da;
   min-height: 38px;
@@ -101,6 +113,7 @@ select.form-select {
 
 /* تعديل خلفية العناصر الداخلية (Tags) */
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
+  font-family: 'Cairo', sans-serif !important;
   background-color: #fff9db !important;
   color: #000;
   border: 1px solid #ced4da;
