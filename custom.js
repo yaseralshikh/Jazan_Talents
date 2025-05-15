@@ -257,6 +257,17 @@ function filterAndDraw() {
   document.getElementById("rowCount").innerText = `عدد الطلاب: ${view.getNumberOfRows()}`;
 }
 
+function downloadExcel() {
+  const table = document.querySelector('#table_div table');
+  if (!table) return alert("لا توجد بيانات حالياً لتصديرها");
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.table_to_sheet(table);
+  XLSX.utils.book_append_sheet(wb, ws, "الطلاب");
+
+  XLSX.writeFile(wb, "بيانات-الطلاب.xlsx");
+}
+
 // function downloadPDF() {
 //   const element = document.getElementById('element-to-pdf');
 //   const opt = {
