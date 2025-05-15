@@ -261,11 +261,19 @@ function downloadExcel() {
   const table = document.querySelector('#table_div table');
   if (!table) return alert("لا توجد بيانات حالياً لتصديرها");
 
+  // الحصول على اسم المدرسة المحددة
+  const school = document.getElementById("schoolSelect").value;
+  const schoolName = school ? `-${school.replace(/\s+/g, "-")}` : "";
+
+  // إنشاء ملف Excel
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.table_to_sheet(table);
   XLSX.utils.book_append_sheet(wb, ws, "الطلاب");
 
-  XLSX.writeFile(wb, "بيانات-الطلاب.xlsx");
+  // تحديد اسم الملف باستخدام اسم المدرسة
+  const fileName = `بيانات-الطلاب${schoolName}.xlsx`;
+
+  XLSX.writeFile(wb, fileName);
 }
 
 // function downloadPDF() {
