@@ -49,7 +49,8 @@ function initializeSelect2() {
     $('#categorySelect').select2({
       dir: 'rtl',
       width: '100%',
-      placeholder: 'اختر تصنيفات'
+      placeholder: 'اختر تصنيفات',
+      closeOnSelect: false
     });
   });
 }
