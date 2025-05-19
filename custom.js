@@ -46,17 +46,6 @@ function initializeSelect2() {
       width: '100%',
       placeholder: 'اختر مدرسة'
     });
-        $('#schoolSelect').select2({
-      dir: "rtl",
-      width: '100%',
-      placeholder: "اختر مدرسة أو أكثر",
-      allowClear: true,
-      language: {
-        noResults: function () {
-          return "لا توجد نتائج";
-        }
-      }
-    });
     $('#categorySelect').select2({
       dir: "rtl",
       width: '100%',
@@ -109,16 +98,20 @@ function updateSchoolDropdown() {
   const stage = document.getElementById("stageSelect").value;
 
   const $schoolSelect = $('#schoolSelect');
-  const previousValues = $schoolSelect.val() || [];
+  const previousValue = $schoolSelect.val();
 
-  // Destroy Select2 if already initialized
+  // ✨ Destroy Select2 if already initialized
   if ($schoolSelect.hasClass("select2-hidden-accessible")) {
     $schoolSelect.select2('destroy');
   }
 
+  // ✨ Clear and rebuild the options
   $schoolSelect.empty();
-  $schoolSelect.append(new Option("عرض الكل", "", false, previousValues.length === 0));
 
+  // ✨ Add "عرض الكل" manually as the first option
+  $schoolSelect.append(new Option("عرض الكل", "", false, !previousValue));
+
+  // ✨ Fill the rest of schools
   const schools = new Set();
   for (let i = 0; i < allData.getNumberOfRows(); i++) {
     const currentSector = allData.getValue(i, 0);
@@ -131,14 +124,15 @@ function updateSchoolDropdown() {
   }
 
   schools.forEach(school => {
-    $schoolSelect.append(new Option(school, school, false, previousValues.includes(school)));
+    $schoolSelect.append(new Option(school, school, false, previousValue === school));
   });
 
+  // ✨ Re-initialize Select2 with proper placeholder & allowClear
   $schoolSelect.select2({
     dir: "rtl",
     width: '100%',
-    placeholder: "اختر مدارس",
-    allowClear: true,
+    placeholder: "عرض الكل",
+    allowClear: true, // this enables X icon to clear
     language: {
       noResults: function () {
         return "لا توجد نتائج";
@@ -146,72 +140,17 @@ function updateSchoolDropdown() {
     }
   });
 
-  if (previousValues.length === 0) {
+  // ✨ Force placeholder activation
+  if (!previousValue) {
     $schoolSelect.val("").trigger("change");
-  } else {
-    $schoolSelect.val(previousValues).trigger("change");
   }
 }
-
-// function updateSchoolDropdown() {
-//   const sector = document.getElementById("sectorSelect").value;
-//   const stage = document.getElementById("stageSelect").value;
-
-//   const $schoolSelect = $('#schoolSelect');
-//   const previousValue = $schoolSelect.val();
-
-//   // ✨ Destroy Select2 if already initialized
-//   if ($schoolSelect.hasClass("select2-hidden-accessible")) {
-//     $schoolSelect.select2('destroy');
-//   }
-
-//   // ✨ Clear and rebuild the options
-//   $schoolSelect.empty();
-
-//   // ✨ Add "عرض الكل" manually as the first option
-//   $schoolSelect.append(new Option("عرض الكل", "", false, !previousValue));
-
-//   // ✨ Fill the rest of schools
-//   const schools = new Set();
-//   for (let i = 0; i < allData.getNumberOfRows(); i++) {
-//     const currentSector = allData.getValue(i, 0);
-//     const currentStage = allData.getValue(i, 1);
-//     const currentSchool = allData.getValue(i, 2);
-//     if ((!sector || currentSector === sector) &&
-//         (!stage || currentStage === stage)) {
-//       schools.add(currentSchool);
-//     }
-//   }
-
-//   schools.forEach(school => {
-//     $schoolSelect.append(new Option(school, school, false, previousValue === school));
-//   });
-
-//   // ✨ Re-initialize Select2 with proper placeholder & allowClear
-//   $schoolSelect.select2({
-//     dir: "rtl",
-//     width: '100%',
-//     placeholder: "عرض الكل",
-//     allowClear: true, // this enables X icon to clear
-//     language: {
-//       noResults: function () {
-//         return "لا توجد نتائج";
-//       }
-//     }
-//   });
-
-//   // ✨ Force placeholder activation
-//   if (!previousValue) {
-//     $schoolSelect.val("").trigger("change");
-//   }
-// }
 
 function filterAndDraw() {
   const searchText = document.getElementById("searchInput")?.value.trim().toLowerCase() || "";
   const sector = document.getElementById("sectorSelect").value;
   const stage = document.getElementById("stageSelect").value;
-  // const school = document.getElementById("schoolSelect").value;
-  const selectedSchools = $('#schoolSelect').val(); // مصفوفة قيم مختارة
+  const school = document.getElementById("schoolSelect").value;
   //const category = document.getElementById("categorySelect").value;
   // const selectedCategories = $('#categorySelect').val(); // مصفوفة من القيم المختارة
   const categories = $('#categorySelect').val(); // مصفوفة
@@ -223,8 +162,7 @@ function filterAndDraw() {
   for (let i = 0; i < allData.getNumberOfRows(); i++) {
     const matchSector = !sector || allData.getValue(i, 0) === sector;
     const matchStage = !stage || allData.getValue(i, 1) === stage;
-    // const matchSchool = !school || allData.getValue(i, 2) === school;
-    const matchSchool = !selectedSchools || selectedSchools.length === 0 || selectedSchools.includes(allData.getValue(i, 2));
+    const matchSchool = !school || allData.getValue(i, 2) === school;
     //const matchCategory = !category || allData.getValue(i, 7) === category;
     const matchCategory = !categories || categories.length === 0 || categories.includes(allData.getValue(i, 7));
 
