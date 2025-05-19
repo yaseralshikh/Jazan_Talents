@@ -44,29 +44,14 @@ function initializeSelect2() {
     $('#schoolSelect').select2({
       dir: "rtl",
       width: '100%',
-      placeholder: 'اختر مدرسة'
+      placeholder: "اختر مدرسة",
+      closeOnSelect: false
     });
-    $('#schoolSelect').select2({
-      dir: "rtl",
-      width: '100%',
-      placeholder: 'اختر مدرسة',
-      allowClear: true,
-      language: {
-        noResults: function () {
-          return "لا توجد نتائج";
-        }
-      }
-    });    
     $('#categorySelect').select2({
       dir: "rtl",
       width: '100%',
-      placeholder: "اختر تصنيفًا",
-      allowClear: true,
-      language: {
-        noResults: function () {
-          return "لا توجد نتائج";
-        }
-      }
+      placeholder: "اختر تصنيفات",
+      closeOnSelect: false
     });
   });
 }
