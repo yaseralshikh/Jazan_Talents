@@ -162,7 +162,7 @@ function filterAndDraw() {
   const sector = document.getElementById("sectorSelect").value;
   const stage = document.getElementById("stageSelect").value;
   // const school = document.getElementById("schoolSelect").value;
-  const schoolOptions = $('#schoolSelect').val(); // مصفوفة من المدارس المحددة
+  const schoolOptions = $('#schoolSelect').val(); // مصفوفة تحتوي على المدارس المختارة
   //const category = document.getElementById("categorySelect").value;
   // const selectedCategories = $('#categorySelect').val(); // مصفوفة من القيم المختارة
   const categories = $('#categorySelect').val(); // مصفوفة
