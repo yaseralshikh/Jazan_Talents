@@ -46,16 +46,21 @@ function initializeSelect2() {
       width: '100%',
       placeholder: 'اختر مدرسة'
     });
-    $('#categorySelect').select2({
-      dir: "rtl",
-      width: '100%',
-      placeholder: "اختر تصنيفات",
-      allowClear: true
-    });
-    $('#schoolSelect').select2({
+        $('#schoolSelect').select2({
       dir: "rtl",
       width: '100%',
       placeholder: "اختر مدرسة أو أكثر",
+      allowClear: true,
+      language: {
+        noResults: function () {
+          return "لا توجد نتائج";
+        }
+      }
+    });
+    $('#categorySelect').select2({
+      dir: "rtl",
+      width: '100%',
+      placeholder: "اختر تصنيفًا",
       allowClear: true,
       language: {
         noResults: function () {
