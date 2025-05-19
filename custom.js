@@ -52,6 +52,12 @@ function initializeSelect2() {
       placeholder: "اختر تصنيفات",
       allowClear: true
     });
+    $('#schoolSelect').select2({
+      dir: "rtl",
+      width: '100%',
+      placeholder: 'اختر مدارس',
+      allowClear: true
+    });
   });
 }
 
@@ -183,7 +189,8 @@ function filterAndDraw() {
   const searchText = document.getElementById("searchInput")?.value.trim().toLowerCase() || "";
   const sector = document.getElementById("sectorSelect").value;
   const stage = document.getElementById("stageSelect").value;
-  const school = document.getElementById("schoolSelect").value;
+  // const school = document.getElementById("schoolSelect").value;
+  const schools = $('#schoolSelect').val(); // مصفوفة من المدارس المختارة
   //const category = document.getElementById("categorySelect").value;
   // const selectedCategories = $('#categorySelect').val(); // مصفوفة من القيم المختارة
   const categories = $('#categorySelect').val(); // مصفوفة
@@ -195,7 +202,8 @@ function filterAndDraw() {
   for (let i = 0; i < allData.getNumberOfRows(); i++) {
     const matchSector = !sector || allData.getValue(i, 0) === sector;
     const matchStage = !stage || allData.getValue(i, 1) === stage;
-    const matchSchool = !school || allData.getValue(i, 2) === school;
+    // const matchSchool = !school || allData.getValue(i, 2) === school;
+    const matchSchool = !schools || schools.length === 0 || schools.includes(allData.getValue(i, 2));
     //const matchCategory = !category || allData.getValue(i, 7) === category;
     const matchCategory = !categories || categories.length === 0 || categories.includes(allData.getValue(i, 7));
 
