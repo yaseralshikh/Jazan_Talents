@@ -99,20 +99,16 @@ function updateSchoolDropdown() {
   const stage = document.getElementById("stageSelect").value;
 
   const $schoolSelect = $('#schoolSelect');
-  const previousValue = $schoolSelect.val();
+  const previousValues = $schoolSelect.val() || [];
 
-  // ✨ Destroy Select2 if already initialized
+  // Destroy Select2 if already initialized
   if ($schoolSelect.hasClass("select2-hidden-accessible")) {
     $schoolSelect.select2('destroy');
   }
 
-  // ✨ Clear and rebuild the options
   $schoolSelect.empty();
+  $schoolSelect.append(new Option("عرض الكل", "", false, previousValues.length === 0));
 
-  // ✨ Add "عرض الكل" manually as the first option
-  $schoolSelect.append(new Option("عرض الكل", "", false, !previousValue));
-
-  // ✨ Fill the rest of schools
   const schools = new Set();
   for (let i = 0; i < allData.getNumberOfRows(); i++) {
     const currentSector = allData.getValue(i, 0);
@@ -125,15 +121,14 @@ function updateSchoolDropdown() {
   }
 
   schools.forEach(school => {
-    $schoolSelect.append(new Option(school, school, false, previousValue === school));
+    $schoolSelect.append(new Option(school, school, false, previousValues.includes(school)));
   });
 
-  // ✨ Re-initialize Select2 with proper placeholder & allowClear
   $schoolSelect.select2({
     dir: "rtl",
     width: '100%',
-    placeholder: "عرض الكل",
-    allowClear: true, // this enables X icon to clear
+    placeholder: "اختر مدارس",
+    allowClear: true,
     language: {
       noResults: function () {
         return "لا توجد نتائج";
@@ -141,27 +136,32 @@ function updateSchoolDropdown() {
     }
   });
 
-  // ✨ Force placeholder activation
-  if (!previousValue) {
+  if (previousValues.length === 0) {
     $schoolSelect.val("").trigger("change");
+  } else {
+    $schoolSelect.val(previousValues).trigger("change");
   }
 }
-
 
 // function updateSchoolDropdown() {
 //   const sector = document.getElementById("sectorSelect").value;
 //   const stage = document.getElementById("stageSelect").value;
 
 //   const $schoolSelect = $('#schoolSelect');
+//   const previousValue = $schoolSelect.val();
 
-//   // إيقاف التهيئة السابقة
+//   // ✨ Destroy Select2 if already initialized
 //   if ($schoolSelect.hasClass("select2-hidden-accessible")) {
 //     $schoolSelect.select2('destroy');
 //   }
 
-//   // إعادة تعبئة القائمة
-//   $schoolSelect.empty().append('<option value="">اختر مدرسة</option>');
+//   // ✨ Clear and rebuild the options
+//   $schoolSelect.empty();
 
+//   // ✨ Add "عرض الكل" manually as the first option
+//   $schoolSelect.append(new Option("عرض الكل", "", false, !previousValue));
+
+//   // ✨ Fill the rest of schools
 //   const schools = new Set();
 //   for (let i = 0; i < allData.getNumberOfRows(); i++) {
 //     const currentSector = allData.getValue(i, 0);
@@ -174,15 +174,26 @@ function updateSchoolDropdown() {
 //   }
 
 //   schools.forEach(school => {
-//     $schoolSelect.append(`<option value="${school}">${school}</option>`);
+//     $schoolSelect.append(new Option(school, school, false, previousValue === school));
 //   });
 
-//   // إعادة تهيئة Select2 بعد التحديث
+//   // ✨ Re-initialize Select2 with proper placeholder & allowClear
 //   $schoolSelect.select2({
 //     dir: "rtl",
 //     width: '100%',
-//     placeholder: 'اختر مدرسة'
+//     placeholder: "عرض الكل",
+//     allowClear: true, // this enables X icon to clear
+//     language: {
+//       noResults: function () {
+//         return "لا توجد نتائج";
+//       }
+//     }
 //   });
+
+//   // ✨ Force placeholder activation
+//   if (!previousValue) {
+//     $schoolSelect.val("").trigger("change");
+//   }
 // }
 
 function filterAndDraw() {
@@ -190,7 +201,7 @@ function filterAndDraw() {
   const sector = document.getElementById("sectorSelect").value;
   const stage = document.getElementById("stageSelect").value;
   // const school = document.getElementById("schoolSelect").value;
-  const schools = $('#schoolSelect').val(); // مصفوفة من المدارس المختارة
+  const selectedSchools = $('#schoolSelect').val(); // مصفوفة قيم مختارة
   //const category = document.getElementById("categorySelect").value;
   // const selectedCategories = $('#categorySelect').val(); // مصفوفة من القيم المختارة
   const categories = $('#categorySelect').val(); // مصفوفة
@@ -203,7 +214,7 @@ function filterAndDraw() {
     const matchSector = !sector || allData.getValue(i, 0) === sector;
     const matchStage = !stage || allData.getValue(i, 1) === stage;
     // const matchSchool = !school || allData.getValue(i, 2) === school;
-    const matchSchool = !schools || schools.length === 0 || schools.includes(allData.getValue(i, 2));
+    const matchSchool = !selectedSchools || selectedSchools.length === 0 || selectedSchools.includes(allData.getValue(i, 2));
     //const matchCategory = !category || allData.getValue(i, 7) === category;
     const matchCategory = !categories || categories.length === 0 || categories.includes(allData.getValue(i, 7));
 
@@ -283,43 +294,4 @@ function downloadExcel() {
 
   XLSX.writeFile(wb, fileName);
 }
-
-// function downloadPDF() {
-//   const element = document.getElementById('element-to-pdf');
-//   const opt = {
-//     margin: 0.5,
-//     filename: 'بيانات-الطلاب.pdf',
-//     image: { type: 'jpeg', quality: 0.98 },
-//     html2canvas: { scale: 2 },
-//     jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
-//   };
-
-//   html2pdf().set(opt).from(element).save();
-// }
-
-// function downloadPDF() {
-//   const element = document.getElementById('element-to-pdf');
-
-//   // ✅ إزالة القيود على الجدول مؤقتًا قبل حفظ PDF
-//   const tableDiv = document.getElementById('table_div');
-//   const oldOverflow = tableDiv.style.overflow;
-//   const oldMaxHeight = tableDiv.style.maxHeight;
-
-//   tableDiv.style.overflow = 'visible';
-//   tableDiv.style.maxHeight = 'none';
-
-//   const opt = {
-//     margin: 0.5,
-//     filename: 'بيانات-الطلاب.pdf',
-//     image: { type: 'jpeg', quality: 0.98 },
-//     html2canvas: { scale: 2 },
-//     jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
-//   };
-
-//   html2pdf().set(opt).from(element).save().then(() => {
-//     // ✅ إعادة الحالة كما كانت بعد الحفظ
-//     tableDiv.style.overflow = oldOverflow;
-//     tableDiv.style.maxHeight = oldMaxHeight;
-//   });
-// }
 
