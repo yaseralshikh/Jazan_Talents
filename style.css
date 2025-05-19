@@ -126,6 +126,12 @@ select.form-select {
   border: 1px solid #ced4da;
 }
 
+.select2-container--default .select2-selection--multiple {
+  background-color: #fff9db;
+  font-family: 'Cairo', sans-serif;
+  min-height: 40px;
+}
+
 /* ✅ إخفاء ترقيم الصفحات من داخل العنصر الخاص بـ PDF */
 #element-to-pdf .google-visualization-table-pagination {
   display: none !important;
