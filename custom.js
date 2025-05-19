@@ -55,8 +55,13 @@ function initializeSelect2() {
     $('#schoolSelect').select2({
       dir: "rtl",
       width: '100%',
-      placeholder: 'اختر مدارس',
-      allowClear: true
+      placeholder: "اختر مدرسة أو أكثر",
+      allowClear: true,
+      language: {
+        noResults: function () {
+          return "لا توجد نتائج";
+        }
+      }
     });
   });
 }
